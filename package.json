@@ -1,0 +1,38 @@
+{
+  "name": "api-churchapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "debug": "^3.1.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "http-errors": "^1.6.2",
+    "jsonwebtoken": "^8.1.0",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^7.3.0",
+    "pg-promise": "^7.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "superagent": "^3.7.0"
+  },
+  "scripts": {
+    "start": "./node_modules/nodemon/bin/nodemon.js",
+    "test": "DEBUG='churchapp*' ./node_modules/mocha/bin/mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
