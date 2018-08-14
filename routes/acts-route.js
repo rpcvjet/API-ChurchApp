@@ -19,11 +19,23 @@ ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
       })
   });
 
+  ActsRouter.get('/api/acts/', jsonParser, function(req, res, next){
+    let UserId = parseInt(req.params.id)
+    db.any('SELECT * FROM acts')
+    .then((data) => {
+      res.status(200)
+      .json({data:data});
+    })
+      .catch((err) => {
+        return next(err);
+      })
+  });
+
 
 //GET TOTAL NUMBER OF ACTS BY USERID
 ActsRouter.get('/api/acts/total/:id', jsonParser, function(req, res, next){
   let UserId = parseInt(req.params.id)
-  db.any('select totalpoints from users where userid = $1', UserId)
+  db.any('select count(*) from acts where userid = $1', UserId)
   .then((data) => {
     res.status(200)
     .json({data})
@@ -35,7 +47,7 @@ ActsRouter.get('/api/acts/total/:id', jsonParser, function(req, res, next){
 
 
 //Update TOTAL ACT COUNT BY USERID
-ActsRouter.get('/api/acts/update/:id', jsonParser, function(req, res, next){
+ActsRouter.put('/api/acts/update/:id', jsonParser, function(req, res, next){
     let UserId = parseInt(req.params.id)
     db.any('Update users set totalpoints = (select count(*) from acts where userid = $1) where userid = $1', UserId)
     .then((data) => {
@@ -50,11 +62,14 @@ ActsRouter.get('/api/acts/update/:id', jsonParser, function(req, res, next){
 //POST ROUTES
 //add a new act to a user
 ActsRouter.post('/api/acts/create', jsonParser, function(req, res, next){
-
+   
+  let description = req.body.description
+  let typeofact = req.body.typeofact
+  let userid = req.body.description
 
   console.log('req.body--->',req.body)
     db.none('INSERT into acts (description, typeofact, userid)' + 
-           'VALUES (${description}, ${typeofact}, ${userid})', req.body.data)
+           'VALUES (${description}, ${typeofact}, ${userid})', req.body)
     .then( () => {
       res.status(200)
       .json({
