@@ -8,7 +8,7 @@ const db = require('../database.js');
 
 //GET ROUTE
 AdminRouter.get('/api/admin/totalpoints', jsonParser, function(req, res, next){
-  db.any('select sum(totalpoints) from users')
+  db.any('select Count(*) from acts')
   .then((data) => {
     res.status(200)
     .json({data:data})
