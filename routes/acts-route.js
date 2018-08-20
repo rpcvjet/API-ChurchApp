@@ -7,9 +7,11 @@ const debug = require('debug')('churchapp:acts-route');
 
 
 //GET ROUTES
+
+//get all acts by userid
 ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
     let UserId = parseInt(req.params.id)
-    db.any('SELECT * FROM acts WHERE userid = $1', UserId)
+    db.any('SELECT * FROM acts WHERE userid = $1 ORDER BY actsid desc', UserId)
     .then((data) => {
       res.status(200)
       .json({data:data});
@@ -18,7 +20,7 @@ ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
         return next(err);
       })
   });
-
+//getallacts
   ActsRouter.get('/api/acts/', jsonParser, function(req, res, next){
     let UserId = parseInt(req.params.id)
     db.any('SELECT * FROM acts')
@@ -34,6 +36,7 @@ ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
 
 //GET TOTAL NUMBER OF ACTS BY USERID
 ActsRouter.get('/api/acts/total/:id', jsonParser, function(req, res, next){
+  console.log('req.body', req.body)
   let UserId = parseInt(req.params.id)
   db.any('select count(*) from acts where userid = $1', UserId)
   .then((data) => {
