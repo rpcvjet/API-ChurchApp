@@ -23,7 +23,7 @@ ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
 //getallacts
   ActsRouter.get('/api/acts/', jsonParser, function(req, res, next){
     let UserId = parseInt(req.params.id)
-    db.any('SELECT * FROM acts')
+    db.any('select * from users FULL OUTER JOIN acts ON users.userid = acts.userid where actsid is not null')
     .then((data) => {
       res.status(200)
       .json({data:data});
