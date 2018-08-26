@@ -1,122 +1,81 @@
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
+const createError = require('http-errors');
 const db = require('../database.js');
 const ActsRouter = new Router();
+const Act = require('../models/acts');
+const User = require('../models/user');
 const debug = require('debug')('churchapp:acts-route');
 
-
-
-//GET ROUTES
-
-//get all acts by userid
-ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
-    let UserId = parseInt(req.params.id)
-    db.any('SELECT * FROM acts WHERE userid = $1 ORDER BY actsid desc', UserId)
-    .then((data) => {
-      res.status(200)
-      .json({data:data});
-    })
-      .catch((err) => {
-        return next(err);
-      })
-  });
-//getallacts
-  ActsRouter.get('/api/acts/', jsonParser, function(req, res, next){
-    let UserId = parseInt(req.params.id)
-    db.any('select * from users FULL OUTER JOIN acts ON users.userid = acts.userid where actsid is not null')
-    .then((data) => {
-      res.status(200)
-      .json({data:data});
-    })
-      .catch((err) => {
-        return next(err);
-      })
-  });
-
-
-//GET TOTAL NUMBER OF ACTS BY USERID
-ActsRouter.get('/api/acts/total/:id', jsonParser, function(req, res, next){
-  console.log('req.body', req.body)
-  let UserId = parseInt(req.params.id)
-  db.any('select count(*) from acts where userid = $1', UserId)
-  .then((data) => {
-    res.status(200)
-    .json({data})
-  })
-  .catch((err) => {
-    return next(err)
-  })
-})
-
-
-//Update TOTAL ACT COUNT BY USERID
-ActsRouter.put('/api/acts/update/:id', jsonParser, function(req, res, next){
-    let UserId = parseInt(req.params.id)
-    db.any('Update users set totalpoints = (select count(*) from acts where userid = $1) where userid = $1', UserId)
-    .then((data) => {
-      res.status(200)
-      .json({data:data});
-    })
-      .catch((err) => {
-        return next(err);
-      })
-  });
 
 //POST ROUTES
 //add a new act to a user
 ActsRouter.post('/api/acts/create', jsonParser, function(req, res, next){
-   
-  let description = req.body.description
-  let typeofact = req.body.typeofact
-  let userid = req.body.description
 
   console.log('req.body--->',req.body)
-    db.none('INSERT into acts (description, typeofact, userid)' + 
-           'VALUES (${description}, ${typeofact}, ${userid})', req.body)
-    .then( () => {
-      res.status(200)
-      .json({
-        message: 'New Act Inserted'
+
+    let newAct = new Act();
+  
+    newAct.description = req.body.description;
+    newAct.typeofact = req.body.typeofact;
+    newAct.userid = req.body.userid;
+  
+    newAct.save(function(err) {
+      if(err){
+        return next(err);
+      }      
+      Act.find().populate('User').exec(function(err, newAct) {
+        console.log(newAct)
+        if(err) {
+          next(err)
+        }
+        res.json(newAct)
+  
       })
-    })
-    .catch( (err) => {
-      return next(err);
-    })
+
+  })
+});
+
+
+//GET ROUTES
+
+// getallacts
+ActsRouter.get('/api/acts/', function(req, res, next){
+  User.aggregate([
+    {
+      $match: {
+        "acts": {$exists: true }
+      }
+    },
+    {
+      $lookup : {
+        from :"acts",
+        localField: "_id",
+        foreignField:'userid',
+        as: "useracts"
+      }
+    }
+  ])
+  .then(acts => res.json(acts))
+  .catch(err => next(createError(404, err.message)))
+});
+
+//get all acts by userid
+ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
+  
+  Act.find({userid: req.params.id}).sort({_id: -1})
+  .then( allacts => res.json(allacts))
+  .catch(err => next(createError(404, err.message)))
   });
 
-  //DELETE ROUTE
-ActsRouter.delete('/api/acts/delete/:id', jsonParser, function (req, res, next) {
-    let ActsId = parseInt(req.params.id)  
-    db.result ('DELETE from acts WHERE actsid = $1', ActsId)
-    .then((result) => {
-      res.status(200)
-      .json({
-        message: `Removed ${result.rowCount} Act`})
-    })
-    .catch((err) => {
-      return next (err)
-    })
-  })
-
-  //*********UPDATE ROUTE****************
-ActsRouter.put('/api/acts/update/:id', jsonParser, function (req, res, next) {
-    console.log('req.body--->',req.body)
-    db.none('UPDATE acts SET description=$1, typeofact=$2 where actsid=$3', 
-    [req.body.description, req.body.typeofact, parseInt(req.params.id)])
-    .then(function () {
-      res.status(200)
-      .json({
-        message: 'Act has been updated'
-      })
-    }) 
-    .catch((err) => {
-      return next (err);
-    })
-  })
-
-  module.exports = ActsRouter;
 
 
+//GET TOTAL NUMBER OF ACTS per user
+ActsRouter.get('/api/acts/total/:id', function(req, res, next){
+  console.log('req.body', req.body)
+  Act.count({userid: req.params.id})
+  .then( totalactsbyperson => res.json(totalactsbyperson))
+  .catch(err => next(createError(404, err.message)))
+})
 
-
-
+module.exports = ActsRouter;
