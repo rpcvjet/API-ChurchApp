@@ -6,35 +6,26 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     fullname: { type: String,required: true},
-    email: {type: String,required: true},
+    email: {type: String,required: true, unique: true},
     password: { type: String,required: true},
-    acts: [{type:Schema.Types.ObjectId, ref: 'Acts'}]
+    acts: [{type:Schema.Types.ObjectId, ref: 'Acts'}],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    createdAt: {
+        type:Date,
+        required: false
+
+    },
+    updatedAt: {
+        type: Number,
+        required: false
+    }
 });
 
 // const User = 
 module.exports = mongoose.model('User', UserSchema);
 
-// module.exports.getUserById = function(id, callback) {
-//     User.findById(id, callback);
-// }
 
-
-// module.exports.getUserByEmail = function(email, callback) {
-//     console.log('email', email)
-//     const query = { email: email}
-//     User.findOne(query, callback);
-// }
-
-// module.exports.addUser = function(newUser, callback) {
-//     bcrypt.genSalt(10, (err,salt) => {
-//         bcrypt.hash(newUser.password, salt, (err, hash) => {
-
-//             if(err) throw err;
-//             newUser.password = hash;
-//             newUser.save(callback);
-//         });
-//     });
-// }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
     console.log('candidatePassword',candidatePassword)
