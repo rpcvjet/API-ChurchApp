@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const config = require('./database');
+const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/auth';
 const debug = require('debug')('churchapp:server');
 const mongoose = require('mongoose')
 const express = require('express');
@@ -11,7 +11,7 @@ const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require ('cors');    
 const User = require('./models/user'); 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
-mongoose.connect(config.DB, { useNewUrlParser: true }).then(
+mongoose.connect(CONNECTION_URI, { useNewUrlParser: true }).then(
     () => {console.log('Database is connected') },
     err => { console.log('Can not connect to the database'+ err)}
 );
