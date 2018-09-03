@@ -7,11 +7,12 @@ const config = require('../database');
 const opts = {}; 
 
 opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = config.secret;
+opts.secretOrKey = 'secret';
 
 module.exports = passport => {
     
     passport.use(new JWTStrategy(opts, (jwt_payload, done) => {
+        console.log('opts', opts)
         User.getUserById(jwt_payload._id), (err, user) => {
             if(err) {
                 return done(err, false);

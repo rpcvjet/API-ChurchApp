@@ -61,6 +61,7 @@ app.use(function(err, req,res,next){
         console.log( 'server up on port:', PORT);
     })
 
+server.isRunning = true;
 
 
 module.exports = server;
