@@ -1,9 +1,10 @@
 'use strict';
-
+require('./mock.env');
 const server = require('../../server');
-const serverControl = {};
+const serverControl = module.exports = {};
 
-serverControl.startServer = function(done) {
+serverControl.startServer = (done) => {
+    
     before(done =>  {
         if(!server.isRunning){
             server.listen(process.env.PORT, () => {

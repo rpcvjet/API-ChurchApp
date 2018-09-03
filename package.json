@@ -25,6 +25,9 @@
     "passport-local": "^1.0.0",
     "pg": "^7.3.0",
     "pg-promise": "^7.0.3",
+    "sinon": "^6.1.5",
+    "sinon-mongoose": "^2.2.1",
+    "supertest": "^3.1.0",
     "validator": "^10.6.0"
   },
   "devDependencies": {
