@@ -5,7 +5,10 @@ env:
  - NODE_ENV="development"
  - NODE_ENV="production"; SESSION_SECRET="lalalala"
 
-before_script: npm i
+before_script: 
+  - npm install
+  
+sudo: required
 
 script:
   - npm test
