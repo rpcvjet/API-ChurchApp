@@ -13,17 +13,16 @@ const AuthRouter  = new Router();
 
 const validateRegisterInput = require('../config/validation/register-validation');
 const validateLoginInput = require('../config/validation/login-validation');
+const validateForgotInput = require('../config/validation/forgot-validation');
 
 const User = require('../models/user')
 
 
 //sign up a new user
 AuthRouter.post('/api/signup', jsonParser, function(req, res){
-    console.log('request body--->',req.body)
     const { errors, isValid } = validateRegisterInput(req.body);
 
     if(!isValid) {
-        console.log('errors', errors)
         return res.status(400).json(errors);
     }
     User.findOne({
@@ -67,7 +66,6 @@ AuthRouter.post('/api/signup', jsonParser, function(req, res){
    
 
 AuthRouter.post('/api/login', jsonParser, function (req, res) {
-    console.log('req.body', req.body)
     
     const { errors, isValid } = validateLoginInput(req.body);
 
@@ -114,6 +112,12 @@ AuthRouter.post('/api/login', jsonParser, function (req, res) {
 //forgot password
 AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
 
+    const { errors, isValid} = validateForgotInput(req.body);
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+
     async.waterfall([
         function(done){
             crypto.randomBytes(20, (err, buf) => {
@@ -122,10 +126,12 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
             })
         },
         function(token, done) {
-                            //this is the email in the form
-            User.findOne({email: req.body.email}, (err, user) => {
+            //this is the email in the form
+            User.findOne({
+                email: req.body.email
+            }, (err, user) => {
                 if(!user) {
-                    return res.json('No account with that email address exists. Please try again.')
+                    return res.status(400).json({email: 'No account with that email address exists. Please try again.'})
                 }
 
                 user.resetPasswordToken = token;
@@ -160,8 +166,7 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
             }
             
             smtpTransport.sendMail(mailOptions, function(err) {
-                console.log('mail sent');
-                res.status(200).json( { message: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
+                res.status(200).json( { email: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
                 done(err, 'done');
               });
         }
@@ -231,7 +236,7 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
                   if(err) {
                       res.status(400).json({message: "There was an error sending your confirmation email"})
                   }
-                res.status(200).json({message: "You password has been reset. You will get a confirmation email"})
+                res.status(200).json({message: "You password has been reset and you can now log in. You will get a confirmation email"})
                 done(err);
             })
             }

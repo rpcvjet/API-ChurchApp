@@ -4,7 +4,6 @@ const server = require('../../server');
 const serverControl = {};
 
 serverControl.startServer = function(done) {
-    //console.log("testing server already up")
     before(done =>  {
         if(!server.isRunning){
             server.listen(process.env.PORT, () => {
