@@ -25,8 +25,6 @@
     "passport-local": "^1.0.0",
     "pg": "^7.3.0",
     "pg-promise": "^7.0.3",
-    "sequelize": "^4.38.0",
-    "uuid": "^3.3.2",
     "validator": "^10.6.0"
   },
   "devDependencies": {
@@ -36,7 +34,7 @@
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "DEBUG='churchapp*' ./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha ./test"
   },
   "keywords": [],
   "author": "",

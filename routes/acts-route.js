@@ -12,8 +12,6 @@ const debug = require('debug')('churchapp:acts-route');
 //add a new act to a user
 ActsRouter.post('/api/acts/create', jsonParser, function(req, res, next){
 
-  console.log('req.body--->',req.body)
-
     let newAct = new Act();
   
     newAct.description = req.body.description;
@@ -25,7 +23,6 @@ ActsRouter.post('/api/acts/create', jsonParser, function(req, res, next){
         return next(err);
       }      
       Act.find().populate('User').exec(function(err, newAct) {
-        console.log(newAct)
         if(err) {
           next(err)
         }
@@ -72,7 +69,6 @@ ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
 
 //GET TOTAL NUMBER OF ACTS per user
 ActsRouter.get('/api/acts/total/:id', function(req, res, next){
-  console.log('req.body', req.body)
   Act.count({userid: req.params.id})
   .then( totalactsbyperson => res.json(totalactsbyperson))
   .catch(err => next(createError(404, err.message)))
