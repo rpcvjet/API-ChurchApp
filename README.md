@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/rpcvjet/API-ChurchApp.svg?branch=master)](https://travis-ci.org/rpcvjet/API-ChurchApp)
+
+
 ### This is the Api for my Mothers ChurchApp
 
 This is a Node.js API with a Postgres database. 
@@ -10,8 +13,8 @@ Otherwise, just type `npm i` to get all the dependencies and then `node server.j
 
 ---
 ## TODO:
-+ Authenticate each route
-+ Fix the JOIN call in the API
-+ Unit Tests
-+ Salt and hash the passwords
+~~+ Authenticate each route~~
+~~+ Fix the JOIN call in the API~~
++ Unit Tests :point_left:
+~~+ Salt and hash the passwords~~
 + Implement Oauth Signin with Facebook and Google. 
