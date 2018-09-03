@@ -1,13 +1,9 @@
 language: node_js
 - "10.1.0"
 
-env:
- - NODE_ENV="development"
- - NODE_ENV="production"; SESSION_SECRET="lalalala"
-
 before_script: 
   - npm install
-  
+
 sudo: required
 
 script:
