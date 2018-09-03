@@ -13,12 +13,12 @@ Otherwise, just type `npm i` to get all the dependencies and then `node server.j
 
 ---
 ## TODO:
-~~+ Authenticate each route~~
+~~- Authenticate each route~~
 
-~~+ Fix the JOIN call in the API~~
+~~- Fix the JOIN call in the API~~
 
-+ Unit Tests :point_left:
+- Unit Tests :point_left:
 
-~~+ Salt and hash the passwords~~
+~~- Salt and hash the passwords~~
 
-+ Implement Oauth Signin with Facebook and Google. 
+- Implement Oauth Signin with Facebook and Google. 
