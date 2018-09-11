@@ -1,10 +1,10 @@
-language: node_js
-- "10.1.0"
+language
+: node_js -"10.1.0"
 
-before_script: 
-  - npm install
+before_script
+: - npm install
 
 sudo: required
 
 script:
-  - npm test
+  - npm run test
