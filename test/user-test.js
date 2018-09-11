@@ -20,11 +20,11 @@ describe('Testing user route', function() {
 
 
     after(serverControl.turnoffServer);
-    // after((done) => {
-    //     User.remove({})
-    //     .then( () => done())
-    //     .catch(done)
-    // })
+    after((done) => {
+        User.remove({})
+        .then( () => done())
+        .catch(done)
+    })
 
 describe('testing login route', function() {
 
@@ -52,17 +52,3 @@ describe('testing login route', function() {
           .catch(done);
       });
 })
-
-
-
-// .end(function(err, res) {
-//     //  ('Content-Type', /json/)
-//     if (err) return done(err);
-//     let token = res.data.token;
-//         jwt.verify(token,'secret', function(err, session) {
-//             if (err) return done(err);
-//             console.log('session', session)
-//             done()
-//         })
-
-//     })
