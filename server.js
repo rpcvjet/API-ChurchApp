@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const CONNECTION_URI = process.env.MONGODB_URI
+const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://heroku_61tzst62:2sgvufsr0jqu2pb0d3kvsmlh4j@ds143932.mlab.com:43932/heroku_61tzst62'
 const debug = require('debug')('churchapp:server');
 const mongoose = require('mongoose')
 const express = require('express');
