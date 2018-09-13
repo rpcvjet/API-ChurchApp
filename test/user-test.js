@@ -15,7 +15,7 @@ const serverControl = require('./lib/serverControl');
 //******USER ROUTE TESTS****** */
 
 describe('Testing user route', function() {
-    
+    this.timeout(30000)
     before(serverControl.startServer)  
     after(serverControl.turnoffServer);
     // after((done) => {
