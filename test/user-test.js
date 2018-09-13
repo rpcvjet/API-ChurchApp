@@ -1,35 +1,32 @@
 'use strict';
 
-require('./lib/mock.env');
 
+const User = require('../models/user');
+let server = require('../server');
+var jwt = require('jsonwebtoken');
+
+require('./lib/mock.env.js');
 const expect = require('chai').expect;
 const superagent = require('superagent');
-const User = require('../models/user');
-const baseURL = `http://localhost:${process.env.PORT}`;
-let server = require('../server');
+const baseURL = process.env.API_URL
 const serverControl = require('./lib/serverControl');
-var jwt = require('jsonwebtoken');
 
 
 //******USER ROUTE TESTS****** */
 
 describe('Testing user route', function() {
     
-    before(serverControl.startServer)  
-})
-
-
-    after(serverControl.turnoffServer);
-    after((done) => {
-        User.remove({})
-        .then( () => done())
-        .catch(done)
-    })
-
-describe('testing login route', function() {
-
-
-    it('should respond with JWT when authenticated', function(done) {
+    // before(serverControl.startServer)  
+    // after(serverControl.turnoffServer);
+    // after((done) => {
+        //     User.remove({})
+        //     .then( () => done())
+        //     .catch(done)
+        // })
+        
+    describe('testing login route', function() {
+                    
+        it('should respond with JWT when authenticated', function(done) {
         superagent.post(`${baseURL}/api/login`)
         .send({"email": `${process.env.EMAIL}`,"password": `${process.env.WEBSITEPASSWORD}`})
         .then(res => {
@@ -42,7 +39,7 @@ describe('testing login route', function() {
         .catch(done);
 
     })
-    it('should respond with a 401 error', (done) => {
+    it('should respond with a 400 error', (done) => {
         superagent.post(`${baseURL}/api/login`)
         .then(done)
         .catch(err=> {
@@ -51,4 +48,7 @@ describe('testing login route', function() {
         })
           .catch(done);
       });
+
+    })
+
 })

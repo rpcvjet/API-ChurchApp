@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/auth';
+const CONNECTION_URI = process.env.MONGODB_URI
 const debug = require('debug')('churchapp:server');
 const mongoose = require('mongoose')
 const express = require('express');
