@@ -3,36 +3,28 @@ require('./mock.env');
 const server = require('../../server');
 const serverControl = module.exports = {};
 
+let myserver;
+
 serverControl.startServer = (done) => {
+    if(!server.isRunning)
+        return myserver =  server.listen(process.env.PORT, () => {
+            server.isRunning = true;
+            console.log('testing server is up');
+            done();
+        });
     
-    before(done =>  {
-        if(!server.isRunning){
-            server.listen(process.env.PORT, () => {
-                server.isRunning = true;
-                console.log('testing server is up');
-                done();
-            });
-            return;
-        }
-        console.log("testing server already up")
-        done();
-    })
+    console.log("testing server already up")
     done();
 }
 
 serverControl.turnoffServer = function(done){
-    after(done => {
-        if(server.isRunning){
-            server.close( () => {
+        if(server.isRunning)
+           return server.close( () => {
                 server.isRunning = false;
                 console.log('testing server is DOWN');
                 done();
-            })
-            return;
-        }
+            })       
         done();
-    })
-    done();
 }
 
 module.exports = serverControl;
