@@ -9,6 +9,10 @@ cache:
 before_script:
   - npm install
 
+services:
+  - mongodb
+
+
 sudo: required
 
 script:
