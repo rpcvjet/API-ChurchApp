@@ -5,7 +5,7 @@ require('./lib/mock.env');
 const expect = require('chai').expect;
 const superagent = require('superagent');
 const User = require('../models/user');
-const baseURL = `http://localhost:${process.env.PORT}`;
+const baseURL = process.env.API_URL
 let server = require('../server');
 const serverControl = require('./lib/serverControl');
 var jwt = require('jsonwebtoken');
