@@ -39,7 +39,7 @@ describe('Testing user route', function() {
         .catch(done);
 
     })
-    it('should respond with a 401 error', (done) => {
+    it('should respond with a 400 error', (done) => {
         superagent.post(`${baseURL}/api/login`)
         .then(done)
         .catch(err=> {
