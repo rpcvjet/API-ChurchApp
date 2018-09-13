@@ -16,8 +16,8 @@ const serverControl = require('./lib/serverControl');
 
 describe('Testing user route', function() {
     
-    before(serverControl.startServer)  
-    after(serverControl.turnoffServer);
+    // before(serverControl.startServer)  
+    // after(serverControl.turnoffServer);
     // after((done) => {
         //     User.remove({})
         //     .then( () => done())
