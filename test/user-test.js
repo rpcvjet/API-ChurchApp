@@ -20,11 +20,11 @@ describe('Testing user route', function() {
 
 
     after(serverControl.turnoffServer);
-    after((done) => {
-        User.remove({})
-        .then( () => done())
-        .catch(done)
-    })
+    // after((done) => {
+    //     User.remove({})
+    //     .then( () => done())
+    //     .catch(done)
+    // })
 
 describe('testing login route', function() {
 
