@@ -14,42 +14,35 @@ const serverControl = require('./lib/serverControl');
 
 //******USER ROUTE TESTS****** */
 
+describe('Testing user route', function() {
+    before(serverControl.startServer);  
+    after(serverControl.turnoffServer);
     
-    // after((done) => {
-        //     User.remove({})
-        //     .then( () => done())
-        //     .catch(done)
-        // })
         
-    describe('testing login route', function() {
-        this.timeout(30000)
-        before(serverControl.startServer)  
-        after(serverControl.turnoffServer);
-        
-
-        it('should respond with JWT when authenticated', function(done) {
+    describe('testing login route', () => {                 
+        it('should respond with JWT when authenticated',(done) => {
         superagent.post(`${baseURL}/api/login`)
         .send({"email": `${process.env.EMAIL}`,"password": `${process.env.WEBSITEPASSWORD}`})
         .then(res => {
             console.log('res', res.body)
             expect(res.status).to.equal(200);
             expect(Boolean(res.text)).to.equal(true);
-            done()
+            done();
 
         })
         .catch(done);
 
     })
-    it('should respond with a 400 error', (done) => {
-        superagent.post(`${baseURL}/api/login`)
-        .then(done)
-        .catch(err=> {
-          expect(err.status).to.equal(400);
-          done();
-        })
-          .catch(done);
-      });
-
+        it('should respond with a 400 error', (done) => {
+            superagent.post(`${baseURL}/api/login`)
+            .then(done)
+            .catch(err=> {
+            expect(err.status).to.equal(400);
+            done();
+            })
+            .catch(done);
+        });
 
     })
 
+})
