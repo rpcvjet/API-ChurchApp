@@ -14,10 +14,7 @@ const serverControl = require('./lib/serverControl');
 
 //******USER ROUTE TESTS****** */
 
-describe('Testing user route', function() {
-    this.timeout(30000)
-    before(serverControl.startServer)  
-    after(serverControl.turnoffServer);
+    
     // after((done) => {
         //     User.remove({})
         //     .then( () => done())
@@ -25,7 +22,11 @@ describe('Testing user route', function() {
         // })
         
     describe('testing login route', function() {
-                    
+        this.timeout(30000)
+        before(serverControl.startServer)  
+        after(serverControl.turnoffServer);
+        
+
         it('should respond with JWT when authenticated', function(done) {
         superagent.post(`${baseURL}/api/login`)
         .send({"email": `${process.env.EMAIL}`,"password": `${process.env.WEBSITEPASSWORD}`})
@@ -49,6 +50,6 @@ describe('Testing user route', function() {
           .catch(done);
       });
 
+
     })
 
-})
