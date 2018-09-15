@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "./node_modules/mocha/bin/mocha ./test"
+    "test": "./node_modules/mocha/bin/mocha ./test --exit"
   },
   "keywords": [],
   "author": "",
