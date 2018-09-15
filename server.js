@@ -57,13 +57,9 @@ app.use(function(err, req,res,next){
 
 
     
-  const server =  app.listen(PORT, () => {
+  const server = module.exports = app.listen(PORT, () => {
         debug('server starting here')
         console.log( 'server up on port:', PORT);
     })
 
 server.isRunning = true;
-
-
-module.exports = server;
-

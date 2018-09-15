@@ -13,17 +13,17 @@ exports.startServer = function(server, done) {
         });
         return;
     }   
-        done();
+    done();
 };
 
 exports.turnoffServer = function(server, done){
     if(server.isRunning) {
-        server.close( () => {
+        server.close( err => {
                 server.isRunning = false;
                 console.log('testing server is DOWN');
                 done();
             });       
         return;
     }
-        done();
+    done();
 };
