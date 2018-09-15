@@ -20,6 +20,7 @@ const User = require('../models/user')
 
 //sign up a new user
 AuthRouter.post('/api/signup', jsonParser, function(req, res){
+    console.log('reqbody', req.body)
     const { errors, isValid } = validateRegisterInput(req.body);
 
     if(!isValid) {

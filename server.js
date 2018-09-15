@@ -1,7 +1,6 @@
 'use strict';
 
-require('dotenv').config();
-const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://heroku_61tzst62:2sgvufsr0jqu2pb0d3kvsmlh4j@ds143932.mlab.com:43932/heroku_61tzst62'
+const dotenv = require('dotenv');
 const debug = require('debug')('churchapp:server');
 const mongoose = require('mongoose')
 const express = require('express');
@@ -9,11 +8,13 @@ const passport = require('passport');
 const morgan = require('morgan');
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
+const Promise = require('bluebird'); 
 const cors = require ('cors');    
-const User = require('./models/user'); 
 const PORT = process.env.PORT || 4000
 
 const app = express();
+
+dotenv.load();
 
 //middleware
 app.use(cors());
@@ -24,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
-mongoose.connect(CONNECTION_URI, { useNewUrlParser: true }).then(
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
     () => {console.log('Database is connected') },
     err => { console.log('Can not connect to the database'+ err)}
 );

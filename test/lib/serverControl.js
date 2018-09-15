@@ -1,30 +1,29 @@
 'use strict';
-require('./mock.env');
-const server = require('../../server');
-const serverControl = module.exports = {};
 
-let myserver;
+module.exports = exports =  {};
 
-serverControl.startServer = (done) => {
-    if(!server.isRunning)
-        return myserver =  server.listen(process.env.PORT, () => {
+
+
+exports.startServer = function(server, done) {
+    if(!server.isRunning) {
+         server.listen(process.env.PORT, () => {
             server.isRunning = true;
-            console.log('testing server is up');
+            console.log("Server up!")
             done();
         });
-    
-    console.log("testing server already up")
-    done();
-}
+        return;
+    }   
+        done();
+};
 
-serverControl.turnoffServer = function(done){
-        if(server.isRunning)
-           return server.close( () => {
+exports.turnoffServer = function(server, done){
+    if(server.isRunning) {
+        server.close( () => {
                 server.isRunning = false;
                 console.log('testing server is DOWN');
                 done();
-            })       
+            });       
+        return;
+    }
         done();
-}
-
-module.exports = serverControl;
+};
