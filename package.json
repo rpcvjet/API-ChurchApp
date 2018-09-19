@@ -33,12 +33,13 @@
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
     "mocha": "^4.1.0",
+    "nyc": "^13.0.1",
     "superagent": "^3.8.3"
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "./node_modules/mocha/bin/mocha ./test --exit",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": " nyc ./node_modules/mocha/bin/mocha ./test --exit",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "",
