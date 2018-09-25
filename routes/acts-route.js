@@ -33,10 +33,9 @@ ActsRouter.post('/api/acts/create', jsonParser, function(req, res, next){
   })
 });
 
-
 //GET ROUTES
 
-// getallacts
+// getall acts
 ActsRouter.get('/api/acts/', function(req, res, next){
   User.aggregate([
     {
@@ -57,7 +56,7 @@ ActsRouter.get('/api/acts/', function(req, res, next){
   .catch(err => next(createError(404, err.message)))
 });
 
-//get all acts by userid
+//get acts by userid
 ActsRouter.get('/api/acts/:id', jsonParser, function(req, res, next){
   
   Act.find({userid: req.params.id}).sort({_id: -1})
