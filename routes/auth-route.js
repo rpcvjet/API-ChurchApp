@@ -3,6 +3,7 @@ const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const createError = require('http-errors');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const async = require('async');
@@ -131,6 +132,7 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
                 email: req.body.email
             }, (err, user) => {
                 if(!user) {
+                //    return next(createError(400, 'No account with that email address exists. Please try again'))
                     return res.status(400).json({email: 'No account with that email address exists. Please try again.'})
                 }
 
