@@ -18,9 +18,7 @@ mongoose.Promise = Promise;
 
 const url = `http://localhost:${process.env.PORT}`;
 
-
-
-  describe('Testing POST /api/acts/create ', function() {
+describe('Testing USER ROUTE ', function() {
     before( done => {serverControl.startServer(server, done)});   
     after( done => {serverControl.turnoffServer(server, done)});
     
@@ -32,28 +30,35 @@ const url = `http://localhost:${process.env.PORT}`;
         .then( () => done())
         .catch(done);
     });
-    
-    describe('Testing admin route', function() {
-        beforeEach(Usermock.bind(this));
 
-        beforeEach(mockAct.bind(this));
-        beforeEach(mockAct.bind(this));
-        beforeEach(mockAct.bind(this));
-  
-        it('should return total points of 1', done => {
-            superagent.get(`${url}/api/admin/totalpoints`)
-            .then(res => {      
-                expect(res.body).to.equal(3);
+    describe('Testing api/users/ route', function() {
+        beforeEach(Usermock.bind(this));
+        
+        it('should return all of 1 user', done => {
+         superagent.get(`${url}/api/users/`)
+         .then(res => {
+             expect(res.status).to.equal(200);
+             expect(res.body.length).to.equal(1)
+            done()
+         })
+         .catch(done)
+        })
+        it('should return user with properid', done => {
+            superagent.get(`${url}/api/users/${this.tempUser._id}`)
+            .then(res => {
+                expect(res.status).to.equal(200);
+                expect(res.body._id).to.equal(this.tempUser._id.toString());
                 done()
             })
             .catch(done)
+           })       
+        it('should return an error with userid', done => {
+            superagent.get(`${url}/api/users/1234`)
+            .end((err, res) => {
+                expect(res.status).to.equal(404);
+               done()
+            })
         })
     })
 
-  })
- 
-
-
-
-
-
+})
