@@ -6,7 +6,7 @@ module.exports = function(done) {
 
     const newUser = new User({
         fullname: 'Cool boy',
-        email: 'rpcvjet@gmail.com',
+        email: 'myemail@gmail.com',
         password: 'isacodeboss',
     })
     bcrypt.genSalt(10, (err, salt) => {
@@ -22,8 +22,7 @@ module.exports = function(done) {
                             this.tempUser = user
                             done()
                         })
-                        .catch(done)
-                       
+                        .catch(done)                      
                 }
             })       
         }
