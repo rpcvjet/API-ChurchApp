@@ -90,7 +90,6 @@ describe('Testing auth route ', function() {
                 superagent.post(`${url}/api/forgot`)
                 .send({email: exampleUser.email})
                 .then( res => {
-                    console.log('res-->', res.body)
                    expect(res.status).to.equal(200);
                    done()
                 })

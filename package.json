@@ -6,6 +6,12 @@
   "engines": {
     "node": "10.1.0"
   },
+  "nyc" : {
+    "exclude": [
+      "config",
+      "test/lib"
+    ]
+  },
   "dependencies": {
     "async": "^2.6.1",
     "bcrypt": "^3.0.0",
