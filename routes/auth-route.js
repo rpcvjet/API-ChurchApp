@@ -3,7 +3,6 @@ const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const createError = require('http-errors');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const async = require('async');
@@ -151,18 +150,18 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
                 secure: false,
                 service:'gmail',
                 auth: {
-                    user: 'kenneth.ashley@gmail.com',
+                    user: process.env.EMAIL,
                     pass: process.env.GMAILPW
                 }
             });
 
             let mailOptions = {
                 to: user.email,
-                from:'kae2141@columbia.edu',
+                from:'ChurchApp Admin',
                 subject: 'ChurchApp Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                'http://localhost:3000/reset/' + token + '\n\n' +
+                `${process.env.WEBSITE_URL}/reset/` + token + '\n\n' +
                 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                        
             }
@@ -223,13 +222,13 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
                 port: 587,
                 secure: false,
               auth: {
-                user: 'kenneth.ashley@gmail.com',
+                user: process.env.EMAIL,
                 pass: process.env.GMAILPW
               }
             });
             let mailOptions = {
                 to: user.email,
-                from: 'kenneth.ashley@gmail.com',
+                from: 'Church Admin',
                 subject: 'Your password has been changed',
                 text: 'Hello,\n\n' +
                   'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
