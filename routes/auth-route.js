@@ -62,9 +62,6 @@ AuthRouter.post('/api/signup', jsonParser, function(req, res){
     });
 });
 
-   
-   
-
 AuthRouter.post('/api/login', jsonParser, function (req, res) {
     
     const { errors, isValid } = validateLoginInput(req.body);
@@ -131,7 +128,6 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
                 email: req.body.email
             }, (err, user) => {
                 if(!user) {
-                //    return next(createError(400, 'No account with that email address exists. Please try again'))
                     return res.status(400).json({email: 'No account with that email address exists. Please try again.'})
                 }
 
@@ -144,30 +140,32 @@ AuthRouter.post('/api/forgot', jsonParser, (req, res, next) => {
             })
         },
         function(token, user, done) {
-            
             let smtpTransport = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: 587,
+                host: process.env.HOST,
+                port: process.env.PORTNUMBER,
                 secure: false,
-                service:'gmail',
                 auth: {
                     user: process.env.EMAIL,
                     pass: process.env.GMAILPW
-                }
+                },
+                debug: false,
+                logger: true
             });
-
             let mailOptions = {
+                from:'Church App',
                 to: user.email,
-                from:'ChurchApp Admin',
                 subject: 'ChurchApp Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                 `${process.env.API_URL}/reset/` + token + '\n\n' +
                 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-                       
+                
             }
             
-            smtpTransport.sendMail(mailOptions, function(err) {
+            smtpTransport.sendMail(mailOptions, function(err, info) {
+                if(!err) {
+                    console.log('Message sent: %s', info.messageId);
+                }
                 res.status(200).json( { email: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
                 done(err, 'done');
               });
@@ -202,8 +200,8 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
             User.findOne({ resetPasswordToken: resetToken}, (err, user) => {
                 if(!err){
                     let now = new Date().getTime();
-
                     let keyExpiration = user.resetPasswordExpires;
+                    
                     if(keyExpiration > now) {
 
                         user.password = bcrypt.hashSync( newPassword, 10);
@@ -219,8 +217,8 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
         function( user,done ) {
 
             let smtpTransport = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: 587,
+                host: process.env.HOST,
+                port: process.env.PORTNUMBER,
                 secure: false,
               auth: {
                 user: process.env.EMAIL,
@@ -228,8 +226,8 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
               }
             });
             let mailOptions = {
-                to: user.email,
                 from: 'Church Admin',
+                to: user.email,
                 subject: 'Your password has been changed',
                 text: 'Hello,\n\n' +
                   'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
@@ -246,13 +244,4 @@ AuthRouter.post('/api/reset', jsonParser, (req, res, next) => {
         if(err) return next(err)
     })
 })
-
-
-
 module.exports = AuthRouter;
-
-
-
-
-
-
